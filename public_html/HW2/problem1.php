@@ -40,6 +40,25 @@ echo "Problem 1: Odd Output<br>";
             </td>
         </tr>
 </table>
+
+<!--
+
+just for fun
+ -->
+ <div>
+     <a href="./problem2.php">
+        <button>
+         Go to problem 2
+        </button>
+    </a>
+     <a href="./problem3.php">
+        <button>
+         Go to problem 3
+        </button>
+    </a>
+</div>
+
+
 <style>
     table {
         border-spacing: 2em 3em;

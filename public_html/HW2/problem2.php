@@ -39,6 +39,25 @@ echo "Problem 2: Adding Floats<br>";
             </td>
         </tr>
 </table>
+
+
+<!--
+
+just for fun
+ -->
+ <div>
+     <a href="./problem1.php">
+        <button>
+         Go to problem 1
+        </button>
+    </a>
+     <a href="./problem3.php">
+        <button>
+         Go to problem 3
+        </button>
+    </a>
+</div>
+
 <style>
     table {
         border-spacing: 2em 3em;
