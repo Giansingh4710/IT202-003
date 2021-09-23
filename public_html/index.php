@@ -1,2 +1,2 @@
-<?php echo "It works!";?>
+<?php echo "It works! M2 hw php done";?>
 
