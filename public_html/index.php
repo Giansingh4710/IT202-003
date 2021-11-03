@@ -1,2 +1,4 @@
-<?php echo "It works! M2 hw php done. Im confused";?>
+<?php
 
+// die(header("Location: login.php"));//Mr.Togels
+die(header("Location: /Project/login.php"));//Mine
