@@ -1,4 +1,4 @@
-/* .alert-success {
+.alert-success {
   background-color: green;
 }
 
@@ -13,7 +13,7 @@
 .alert-info {
   background-color: teal;
 }
-nav li {
+/* nav li {
   display: inline;
   background-color: rebeccapurple;
 }
