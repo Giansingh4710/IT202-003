@@ -32,17 +32,124 @@
 
 - Milestone 1
 
-  - [ ] \(mm/dd/yyyy of completion) User will be able to register a new account
+  - [ ] \(10/20/2021 of completion) User will be able to register a new account
+
     - List of Evidence of Feature Completion
     - Status:(Completed)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Direct Link: (http://gs4-prod.herokuapp.com/Project/register.php)
     - Pull Requests
       - PR link #1 : https://github.com/Giansingh4710/IT202-003/pull/9
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141353857-5b6bd291-0e3f-47c5-93a9-4d544c5b0dfb.png)
+        - User Signing Up
+      - Screenshot #2
+        ![image](https://user-images.githubusercontent.com/73843250/141354469-3b69e37a-a221-48e5-86c6-7f281ba2a71b.png)
+        - Message showing registration worked
+
+  - [ ] \(11/03/2021 of completion) User will be able to login to their account
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (http://gs4-prod.herokuapp.com/Project/login.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/22)
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141355515-75eb9f45-93f0-4de7-985c-194039121a33.png)
+        - User Logging in
+      - Screenshot #2
+        ![image](https://user-images.githubusercontent.com/73843250/141356265-3a360a75-7544-4691-9ae9-85b733eeae47.png)
+        - User logged in
+
+  - [ ] \(11/03/2021 of completion) User will be able to logout
+
+    - List of Evidence of Feature Completion
+    - Status: (Partially working- can't get the 'successfully logged out' message to show up)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/logout.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/22)
     - Screenshots
       - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
         - Screenshot #1 description explaining what you're trying to show
 
-  ### End Line item / Feature Template
+  - [ ] \(11/03/2021 of completion) Basic security rules implemented
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/admin/create_role.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/21)
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141376088-25378fc8-9cff-48b0-b0fe-69c2b62b6763.png)
+        - All options you get as a admin user
+
+  - [ ] \(11/03/2021 of completion) Basic Roles implemented
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/admin/assign_roles.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/21)
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141377595-ccf5a927-091c-4e97-8e7b-0b4a6d6cb000.png)
+        - The Roles page that an admin can view
+
+  - [ ] \(11/09/2021 of completion) Site should have basic styles/theme applied
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/26)
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141353857-5b6bd291-0e3f-47c5-93a9-4d544c5b0dfb.png)
+        - Picture showing the themed website
+
+  - [ ] \(10/25/2021 of completion) Any output messages/errors should be “user friendly”
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/admin/assign_roles.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/19)
+    - Screenshots
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141378474-28fcc53c-5d36-4c7e-84df-191a2b0df53e.png)
+        - Showing the user friendly flash messages
+
+  - [ ] \(11/03/2021 of completion) User will be able to see their profile
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/profile.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/22)
+    - Screenshots
+
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141378868-74841e3e-1446-4b4c-a1f1-f08f7929c060.png)
+
+        - showing profile screen
+
+  - [ ] \(11/03/2021 of completion) User will be able to edit their profile
+
+    - List of Evidence of Feature Completion
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/profile.php)
+    - Pull Requests
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/22)
+    - Screenshots
+
+      - Screenshot #1
+        ![image](https://user-images.githubusercontent.com/73843250/141378868-74841e3e-1446-4b4c-a1f1-f08f7929c060.png)
+
+        - showing that profile can be updated
+
+### End Line item / Feature Template
 
 - Milestone 2
 - Milestone 3
