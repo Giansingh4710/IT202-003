@@ -1,14 +1,16 @@
-# Project Name: (Simple Arcade)
+# Project Name: (Simple Shop)
 
-## Project Summary: (Copy from proposal)
+## Project Summary: (This project will create a simple e-commerce site for users. Administrators or store owners will be able to manage inventory and users will be able to manage their cart and place orders.)
 
-## Github Link: (Prod Branch of Project Folder)
+<!-- ## Github Link: (Prod Branch of Project Folder) -->
+
+## Github Link: (https://github.com/Giansingh4710/IT202-003/tree/prod)
 
 ## Project Board Link:
 
 ## Website Link: (Heroku Prod of Project folder)
 
-## Your Name:
+## Your Name: Gian Singh
 
 <!--
 ### Line item / Feature template (use this for each bullet point)
@@ -30,20 +32,15 @@
 
 - Milestone 1
 
-  ### Line item / Feature template (use this for each bullet point)
-
-  #### Don't delete this
-
-  - [ ] \(mm/dd/yyyy of completion) Feature Title (from the proposal bullet point, if it's a sub-point indent it properly)
-  - List of Evidence of Feature Completion
-  - Status: Pending (Completed, Partially working, Incomplete, Pending)
-  - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
-  - Pull Requests
-    - PR link #1 (repeat as necessary)
-  - Screenshots
-
-    - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-    - Screenshot #1 description explaining what you're trying to show
+  - [ ] \(mm/dd/yyyy of completion) User will be able to register a new account
+    - List of Evidence of Feature Completion
+    - Status:(Completed)
+    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Pull Requests
+      - PR link #1 : https://github.com/Giansingh4710/IT202-003/pull/9
+    - Screenshots
+      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
+        - Screenshot #1 description explaining what you're trying to show
 
   ### End Line item / Feature Template
 
