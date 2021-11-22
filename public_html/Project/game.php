@@ -28,7 +28,7 @@
   <body>
     <h1>Play Suduko</h1>
     <h2 id="loading">Loading....</h2>
-    <table id="theGameGrid" border="1">
+    <table id="theGameGrid">
       <div class="threeRows">
         <tr>
           <td class="cell" id="cell1"><input type="text" maxlength="1" /></td>
@@ -212,50 +212,65 @@
     </table>
     <button onclick="solveAndShowBoard()">Show solved board</button>
     <button onclick="generateRandomBoard()">New game</button>
+    <button onclick="checkIfCorrect()">See if Correct</button>
   </body>
   <script>
     const BOARD = [];
-    function generateRandomBoard() {
+
+    function sleep(ms) {
+      return new Promise((res) => setTimeout(res, ms));
+    }
+
+    async function generateRandomBoard() {
       const theGameGrid = document.getElementById("theGameGrid");
       const loading = document.getElementById("loading");
       loading.style.display = "block";
       theGameGrid.style.display = "none";
+      await sleep(1);
 
       const clearBoard = () => {
         for (let i = 0; i < 9; i++) {
           BOARD[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         }
       };
-      clearBoard();
 
-      //puts random numbers in cells
-      const cellsWithNums = 40;
-      for (let i = 0; i < cellsWithNums; i++) {
-        const indexToPut = Math.floor(Math.random() * 81);
-        const row = Math.floor(indexToPut / 9);
-        const col = indexToPut % 9;
-        const numToPut = Math.floor(Math.random() * 9) + 1;
-        if (validNum(numToPut, row, col, BOARD)) {
-          BOARD[row][col] = numToPut;
+      while (true) {
+        clearBoard();
+        const cellsWithNums = 40;
+        for (let i = 0; i < cellsWithNums; i++) {
+          let indexToPut = Math.floor(Math.random() * 81);
+          let row = Math.floor(indexToPut / 9);
+          let col = indexToPut % 9;
+          while (BOARD[row][col] !== 0) {
+            indexToPut = Math.floor(Math.random() * 81);
+            row = Math.floor(indexToPut / 9);
+            col = indexToPut % 9;
+          }
+          for (let numToPut = 1; numToPut < 10; numToPut++) {
+            if (validNum(numToPut, row, col, BOARD)) {
+              BOARD[row][col] = numToPut;
+            }
+          }
         }
-      }
 
-      console.log("solving board.....");
-      //solves the board
-      let a = solveBoard(BOARD);
-      //if board is solvable, the it will take away random spaces
-      //and show that board to be solved
-      console.log("is the board solvable?-", a);
-      if (a) {
-        unsolveBoard(BOARD);
-        showUserBoard(BOARD);
-        theGameGrid.style.display = "block";
-        loading.style.display = "none";
-        return;
+        console.log("solving board.....");
+        let solvable = solveBoard(BOARD);
+        console.log(
+          solvable
+            ? "Board Solvable"
+            : "Board not solvable. Generating New board"
+        );
+        if (solvable) {
+          unsolveBoard(BOARD);
+          showUserBoard(BOARD);
+          theGameGrid.style.display = "block";
+          loading.style.display = "none";
+          return;
+        }
+        //   debugger;
+        //if board not solvable, it will recurse till solveable
+        // generateRandomBoard();
       }
-      //   debugger;
-      //if board not solvable, it will recurse till solveable
-      generateRandomBoard();
     }
 
     function showUserBoard(board) {
@@ -275,10 +290,14 @@
 
     const validNum = (testNum, row, col, brd) => {
       const inRowAndCol = (testNum, row, col, brd) => {
-        if (brd[row].includes(testNum)) {
-          return true;
+        for (let i = 0; i < 9; i++) {
+          if (i === col) continue;
+          if (brd[row][i] === testNum) {
+            return true;
+          }
         }
         for (let i = 0; i < 9; i++) {
+          if (i == row) continue;
           if (brd[i][col] === testNum) {
             return true;
           }
@@ -292,6 +311,7 @@
         const y = topRightOfBox[1];
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 3; j++) {
+            if (x + i === row && y + j === col) continue;
             if (testNum === brd[x + i][y + j]) {
               return true;
             }
@@ -348,6 +368,41 @@
       showUserBoard(BOARD);
     }
 
+    function checkIfCorrect() {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          cellNum = "cell" + (i * 9 + j + 1);
+          theCell = document.getElementById(cellNum).lastChild;
+          let a = validNum(parseInt(theCell.value), i, j, BOARD);
+          if (theCell.value === "") {
+            alert("BOARD not filled");
+            return;
+          } else if (!a) {
+            alert("NOT VALID BOARD");
+            return;
+          }
+        }
+      }
+      alert("GOOD JOB. IT'S a VALID BOARD");
+      // console.log(BOARD);
+    }
+
+    function fillBoard(corr) {
+      if (corr) {
+        solveBoard(BOARD);
+      } else {
+        for (let i = 0; i < 9; i++) {
+          for (let j = 0; j < 9; j++) {
+            cellNum = "cell" + (i * 9 + j + 1);
+            theCell = document.getElementById(cellNum).lastChild;
+            if (!theCell.disabled) {
+              BOARD[i][j] = Math.floor(Math.random() * 9) + 1;
+            }
+          }
+        }
+      }
+      showUserBoard(BOARD);
+    }
     generateRandomBoard();
   </script>
 </html>
