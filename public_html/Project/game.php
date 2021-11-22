@@ -1,3 +1,6 @@
+<?php
+require(__DIR__ . "/../../partials/nav.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -287,6 +290,18 @@
         }
       }
     }
+    function showUserBoard2(board) {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          cellNum = "cell" + (i * 9 + j + 1);
+          if (board[i][j] !== 0) {
+            document.getElementById(cellNum).lastChild.value = board[i][j];
+          } else {
+            document.getElementById(cellNum).lastChild.value = "";
+          }
+        }
+      }
+    }
 
     const validNum = (testNum, row, col, brd) => {
       const inRowAndCol = (testNum, row, col, brd) => {
@@ -401,8 +416,11 @@
           }
         }
       }
-      showUserBoard(BOARD);
+      showUserBoard2(BOARD);
     }
     generateRandomBoard();
   </script>
 </html>
+<?php
+require(__DIR__ . "/../../partials/flash.php");
+?>
