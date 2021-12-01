@@ -233,6 +233,7 @@ require(__DIR__ . "/../../partials/nav.php");
     <button onclick="solveAndShowBoard()">Show solved board</button>
     <button onclick="generateRandomBoard()">New game</button>
     <button onclick="checkIfCorrect()" id="isCorrect">See if Correct</button>
+    <p class="solveBoardText" id="testSaveScore"></p>
   </body>
   <script>
     const BOARD = [];
@@ -243,7 +244,11 @@ require(__DIR__ . "/../../partials/nav.php");
 
     function getScore(){
       $(document).ready(()=>{
+        <?php if(is_logged_in()):?>
           $("#score").load("api/get_score.php");
+          <?php else: ?>
+            $("#score").text("Please Log in to get Score")
+        <?php endif; ?>
       });
     }
 
@@ -430,19 +435,20 @@ require(__DIR__ . "/../../partials/nav.php");
     function sendDataToServer(){
       $.ajax(
         {
-        // type: "POST",
-        url: "api/save_score.php",
-        success: (resp, status, xhr) => {
-            getScore();
+          // type: "POST",
+          url: "api/save_score.php",
+          success: (resp, status, xhr) => {
             console.log(resp, status, xhr);
             // window.location.reload(); //lazily reloading the page to get a new nonce for next game
-        },
-        error: (xhr, status, error) => {
+          },
+          error: (xhr, status, error) => {
             console.log(xhr, status, error);
             // window.location.reload();
+          }
         }
-        }
-      );
+        );
+        getScore();
+        $("#testSaveScore").load("api/save_score.php");
     }
 
     function fillBoard(corr) {
