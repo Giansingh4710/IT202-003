@@ -14,11 +14,11 @@ require(__DIR__ . "/../../../lib/functions.php");
         // $userId= $theFetch['id'];
         session_start();
         $userId= get_user_id();
-        
-        $getScore = $db->prepare("SELECT IFNULL(score,0) from Scores where user_id = :userId");
+
+        $getScore = $db->prepare("SELECT score from Scores where user_id = :userId");
         $getScore->execute([":userId" => $userId]);
         $theFetch=$getScore->fetch();
-        $theScore=$theFetch===false?"0":$theFetch;
+        $theScore=$theFetch===false?"0":$theFetch["score"];
         echo $theScore;
     } catch (Exception $e) {
         // flash("<pre>" . var_export($e, true) . "</pre>");

@@ -439,16 +439,13 @@ require(__DIR__ . "/../../partials/nav.php");
           url: "api/save_score.php",
           success: (resp, status, xhr) => {
             console.log(resp, status, xhr);
-            // window.location.reload(); //lazily reloading the page to get a new nonce for next game
           },
           error: (xhr, status, error) => {
             console.log(xhr, status, error);
-            // window.location.reload();
           }
         }
         );
         getScore();
-        $("#testSaveScore").load("api/save_score.php");
     }
 
     function fillBoard(corr) {
