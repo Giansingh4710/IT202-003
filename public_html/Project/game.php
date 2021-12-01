@@ -1,3 +1,6 @@
+<?php
+require(__DIR__ . "/../../partials/nav.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Suduko</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <style>
       #theGameGrid {
         /* border: 3px solid #000000; */
@@ -23,11 +27,27 @@
         text-align: center;
         font-size: 30px;
       }
+      .displayScore{
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+      }
+      .solveBoardText{
+        flex: 1;
+      }
     </style>
   </head>
   <body>
     <h1>Play Suduko</h1>
     <h2 id="loading">Loading....</h2>
+    <div class="displayScore">
+      <h4 class="solveBoardText">Solved Boards:</h4>
+      <p class="solveBoardText" id="score"></p>
+    </div>
+    <?php if(!is_logged_in()):?>
+      <a href="<?php echo get_url("login.php?redirect=game.php"); ?>">Log In</a>
+      <p>If want to save your solved boards, Log In.</p>
+    <?php endif; ?>
     <table id="theGameGrid">
       <div class="threeRows">
         <tr>
@@ -212,13 +232,19 @@
     </table>
     <button onclick="solveAndShowBoard()">Show solved board</button>
     <button onclick="generateRandomBoard()">New game</button>
-    <button onclick="checkIfCorrect()">See if Correct</button>
+    <button onclick="checkIfCorrect()" id="isCorrect">See if Correct</button>
   </body>
   <script>
     const BOARD = [];
-
+    
     function sleep(ms) {
       return new Promise((res) => setTimeout(res, ms));
+    }
+
+    function getScore(){
+      $(document).ready(()=>{
+          $("#score").load("api/get_score.php");
+      });
     }
 
     async function generateRandomBoard() {
@@ -253,23 +279,21 @@
           }
         }
 
-        console.log("solving board.....");
+        // console.log("solving board.....");
         let solvable = solveBoard(BOARD);
-        console.log(
-          solvable
-            ? "Board Solvable"
-            : "Board not solvable. Generating New board"
-        );
+        // console.log(
+        //   solvable
+        //     ? "Board Solvable"
+        //     : "Board not solvable. Generating New board"
+        // );
         if (solvable) {
           unsolveBoard(BOARD);
           showUserBoard(BOARD);
           theGameGrid.style.display = "block";
           loading.style.display = "none";
+          $("#isCorrect").show()
           return;
         }
-        //   debugger;
-        //if board not solvable, it will recurse till solveable
-        // generateRandomBoard();
       }
     }
 
@@ -282,6 +306,18 @@
             document.getElementById(cellNum).lastChild.disabled = true;
           } else {
             document.getElementById(cellNum).lastChild.disabled = false;
+            document.getElementById(cellNum).lastChild.value = "";
+          }
+        }
+      }
+    }
+    function showUserBoard2(board) {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          cellNum = "cell" + (i * 9 + j + 1);
+          if (board[i][j] !== 0) {
+            document.getElementById(cellNum).lastChild.value = board[i][j];
+          } else {
             document.getElementById(cellNum).lastChild.value = "";
           }
         }
@@ -375,16 +411,38 @@
           theCell = document.getElementById(cellNum).lastChild;
           let a = validNum(parseInt(theCell.value), i, j, BOARD);
           if (theCell.value === "") {
-            alert("BOARD not filled");
+            // alert("BOARD not filled");
+            flash("BOARD not filled", "danger");
             return;
           } else if (!a) {
-            alert("NOT VALID BOARD");
+            flash("BOARD not filled", "danger");
             return;
           }
         }
       }
-      alert("GOOD JOB. IT'S a VALID BOARD");
-      // console.log(BOARD);
+      flash("GOOD JOB. IT'S a VALID BOARD", "success");
+      // let theScore=document.getElementById("score")
+      // theScore.innerText=parseInt(theScore.innerText)+1
+      $("#isCorrect").hide()
+      sendDataToServer()
+    }
+
+    function sendDataToServer(){
+      $.ajax(
+        {
+        // type: "POST",
+        url: "api/save_score.php",
+        success: (resp, status, xhr) => {
+            getScore();
+            console.log(resp, status, xhr);
+            // window.location.reload(); //lazily reloading the page to get a new nonce for next game
+        },
+        error: (xhr, status, error) => {
+            console.log(xhr, status, error);
+            // window.location.reload();
+        }
+        }
+      );
     }
 
     function fillBoard(corr) {
@@ -401,8 +459,13 @@
           }
         }
       }
-      showUserBoard(BOARD);
+      showUserBoard2(BOARD);
     }
+
+    getScore();
     generateRandomBoard();
   </script>
 </html>
+<?php
+require(__DIR__ . "/../../partials/flash.php");
+?>
