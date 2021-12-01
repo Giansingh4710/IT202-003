@@ -1,26 +1,37 @@
 <?php
-//remember, API endpoints should only echo/output precisely what you want returned
-//any other unexpected characters can break the handling of the response
+require(__DIR__ . "/../../../lib/db.php");
+require(__DIR__ . "/../../../lib/functions.php");
+?>
+<?php
+    try {
+        $db = getDB();
+        session_start();
+        $userId= get_user_id();
 
-
-include "get_score.php";
-
-
-$response = ["message" => "There was a problem saving your score"];
-// http_response_code(400);
-// $contentType = $_SERVER["CONTENT_TYPE"];
-// error_log("Content Type $contentType");
-// if ($contentType === "application/json") {
-//     $json = file_get_contents('php://input');
-//     $data = json_decode($json, true)["data"];
-// } else if ($contentType === "application/x-www-form-urlencoded") {
-//     $data = $_POST;
-// }
-
-// error_log(var_export($data, true));
-
-// print($a);
-// print("\n");
-$newScore=$theScore+1;
-$theScore=$newScore;
-echo ($newScore);
+        $boardSolved=$_POST['boardSolved'];
+        $boardSolved=$boardSolved==="false"?0:1;
+        if($boardSolved===1){
+            //+1 to users score
+            $getScore = $db->prepare("SELECT score from Scores where user_id = :userId");
+            $getScore->execute([":userId" => $userId]);
+            $theFetch=$getScore->fetch();
+            
+            if ($theFetch===false){
+                $putScore = $db->prepare("INSERT INTO Scores (score,user_id) VALUES (:newScore,:userId)");
+            }
+            else{
+                $putScore = $db->prepare("UPDATE Scores SET score=:newScore where user_id = :userId");
+            }
+            $theScore=$theFetch===false?"0":$theFetch["score"];
+            $putScore->execute([":newScore"=>$theScore+1,":userId" => $userId]);
+            echo "Correct Board\n";
+        }
+        $addAttempt = $db->prepare("INSERT INTO ScoreHistory (user_id,correct) VALUES (:userId,:correctBrd)");
+        $addAttempt->execute([":userId" => $userId,":correctBrd" => $boardSolved]);
+        echo "Databases Updated!!\n";
+    } catch (Exception $e) {
+         echo var_export($e, true);
+         echo "\nDatabase not updated";
+    }
+    // echo "85";
+?>
