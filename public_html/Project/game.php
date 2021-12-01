@@ -247,7 +247,7 @@ require(__DIR__ . "/../../partials/nav.php");
         <?php if(is_logged_in()):?>
           $("#score").load("api/get_score.php");
           <?php else: ?>
-            $("#score").text("Please Log in to get Score")
+            $("#score").text("Please Log in to Get or Save Score")
         <?php endif; ?>
       });
     }
@@ -414,31 +414,37 @@ require(__DIR__ . "/../../partials/nav.php");
         for (let j = 0; j < 9; j++) {
           cellNum = "cell" + (i * 9 + j + 1);
           theCell = document.getElementById(cellNum).lastChild;
-          let a = validNum(parseInt(theCell.value), i, j, BOARD);
+          let goodNum = validNum(parseInt(theCell.value), i, j, BOARD);
           if (theCell.value === "") {
-            // alert("BOARD not filled");
+            sendDataToServer(false)
             flash("BOARD not filled", "danger");
             return;
-          } else if (!a) {
-            flash("BOARD not filled", "danger");
+          } else if (!goodNum) {
+            sendDataToServer(false)
+            flash("Incorrect Board ", "danger");
             return;
           }
         }
       }
+      sendDataToServer(true)
       flash("GOOD JOB. IT'S a VALID BOARD", "success");
-      // let theScore=document.getElementById("score")
-      // theScore.innerText=parseInt(theScore.innerText)+1
       $("#isCorrect").hide()
-      sendDataToServer()
-    }
 
-    function sendDataToServer(){
+    }
+    
+    function sendDataToServer(correctBoard){
+      <?php if(!is_logged_in()):?>
+        console.log("Not logged in!. from sendData Func");
+        flash("Log in to Save Score.","warning")
+        return;
+      <?php endif; ?>
       $.ajax(
         {
-          // type: "POST",
           url: "api/save_score.php",
+          type: "post",
+          data:{"boardSolved":correctBoard},
           success: (resp, status, xhr) => {
-            console.log(resp, status, xhr);
+            console.log(resp)
           },
           error: (xhr, status, error) => {
             console.log(xhr, status, error);
