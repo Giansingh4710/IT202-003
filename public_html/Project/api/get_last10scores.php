@@ -13,6 +13,7 @@ require(__DIR__ . "/../../../lib/functions.php");
         $theFetch=$getScores->fetchAll();
         $json= json_encode($theFetch);
         echo $json;
+        // echo get_top10_weekly();
     } catch (Exception $e) {
          echo var_export($e, true);
          echo "\nDatabase not updated";

@@ -149,6 +149,10 @@ $username = get_username();
     }
     function showScores(scrs){
         const theUl=document.getElementById("last10Scores")
+        theUl.innerHTML=""
+        if(scrs.length===0){
+            theUl.innerHTML="<div>No recorded attempts.</div>"
+        }
         scrs.forEach(score=>{
             const li=document.createElement("li")
             const div=document.createElement("div")
