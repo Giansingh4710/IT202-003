@@ -83,7 +83,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         } else {
                             $_SESSION["user"]["roles"] = []; //no roles
                         }
-                        die(header("Location: home.php"));
+                        // $url=se($_GET,"redirect","home.php",false);
+                        $url=se($_GET,"redirect","game.php",false);
+                        die(header("Location: $url"));
                     } else {
                         flash("Invalid password", "danger");
                     }
