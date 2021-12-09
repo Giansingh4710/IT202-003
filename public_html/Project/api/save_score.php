@@ -9,26 +9,32 @@ require(__DIR__ . "/../../../lib/functions.php");
         $userId= get_user_id();
 
         $boardSolved=$_POST['boardSolved'];
-        $boardSolved=$boardSolved==="false"?0:1;
-        if($boardSolved===1){
-            //+1 to users score
-            $getScore = $db->prepare("SELECT score from Scores where user_id = :userId");
-            $getScore->execute([":userId" => $userId]);
-            $theFetch=$getScore->fetch();
-            
-            if ($theFetch===false){
-                $putScore = $db->prepare("INSERT INTO Scores (score,user_id) VALUES (:newScore,:userId)");
+        $points=$_POST['points'];
+        if($boardSolved=="true" || $boardSolved=="false"){//is boardSolved is null, we dont want to update it
+            $boardSolved=$boardSolved==="false"?0:1;
+            if($boardSolved===1){
+                //+1 to users score
+                $getScore = $db->prepare("SELECT score from Scores where user_id = :userId");
+                $getScore->execute([":userId" => $userId]);
+                $theFetch=$getScore->fetch();
+                
+                if ($theFetch===false){
+                    $putScore = $db->prepare("INSERT INTO Scores (score,user_id) VALUES (:newScore,:userId)");
+                }
+                else{
+                    $putScore = $db->prepare("UPDATE Scores SET score=:newScore where user_id = :userId");
+                }
+                $theScore=$theFetch===false?"0":$theFetch["score"];
+                $putScore->execute([":newScore"=>$theScore+1,":userId" => $userId]);
+                echo "Correct Board\n";
             }
-            else{
-                $putScore = $db->prepare("UPDATE Scores SET score=:newScore where user_id = :userId");
-            }
-            $theScore=$theFetch===false?"0":$theFetch["score"];
-            $putScore->execute([":newScore"=>$theScore+1,":userId" => $userId]);
-            echo "Correct Board\n";
+            $addAttempt = $db->prepare("INSERT INTO ScoreHistory (user_id,correct) VALUES (:userId,:correctBrd)");
+            $addAttempt->execute([":userId" => $userId,":correctBrd" => $boardSolved]);
+            echo "Databases Updated!!\n";
         }
-        $addAttempt = $db->prepare("INSERT INTO ScoreHistory (user_id,correct) VALUES (:userId,:correctBrd)");
-        $addAttempt->execute([":userId" => $userId,":correctBrd" => $boardSolved]);
-        echo "Databases Updated!!\n";
+        elseif ($points!="0"){
+            echo "Points Updated";
+        }
     } catch (Exception $e) {
          echo var_export($e, true);
          echo "\nDatabase not updated";
