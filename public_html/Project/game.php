@@ -434,7 +434,7 @@ require(__DIR__ . "/../../partials/nav.php");
     function solveAndShowBoard() {
       solveBoard(BOARD);
       showUserBoard2(BOARD);
-      sendDataToServer(null,-2);
+      sendDataToServer(null,-2,"pressed solve board button");
     }
 
     function checkIfCorrect() {
@@ -444,23 +444,23 @@ require(__DIR__ . "/../../partials/nav.php");
           theCell = document.getElementById(cellNum).lastChild;
           let goodNum = validNum(parseInt(theCell.value), i, j, BOARD);
           if (theCell.value === "") {
-            sendDataToServer(false,0)
+            sendDataToServer(false,0,"")
             flash("BOARD not filled", "danger");
             return;
           } else if (!goodNum) {
-            sendDataToServer(false,0)
+            sendDataToServer(false,0,"")
             flash("Incorrect Board ", "danger");
             return;
           }
         }
       }
-      sendDataToServer(true,1)
+      sendDataToServer(true,1,"solved board correctly")
       flash("GOOD JOB. IT'S a VALID BOARD", "success");
       // $("#seeIfCorrect").hide()
 
     }
     
-    function sendDataToServer(boardIsSolved=null,pointsUpdate=0){
+    function sendDataToServer(boardIsSolved,pointsUpdate,reason){
       console.log(boardIsSolved,pointsUpdate)
       <?php if(!is_logged_in()):?>
         console.log("Not logged in!. from sendData Func");
@@ -473,7 +473,8 @@ require(__DIR__ . "/../../partials/nav.php");
           type: "post",
           data:{
             "boardSolved":boardIsSolved,
-            "points":pointsUpdate
+            "points":pointsUpdate,
+            "reason":reason,
           },
           success: (resp, status, xhr) => {
             console.log("resp",resp)
