@@ -11,8 +11,6 @@ require(__DIR__ . "/../../../lib/functions.php");
         $getPoints = $db->prepare("SELECT points from Users where id = :userId");
         $getPoints->execute([":userId" => $userId]);
         $theFetch=$getPoints->fetch();
-        // $theScore=$theFetch===false?"0":$theFetch["score"];
-        
         $theScore=$theFetch["points"];
         echo $theScore;
     } catch (Exception $e) {

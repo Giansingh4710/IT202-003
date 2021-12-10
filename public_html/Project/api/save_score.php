@@ -9,7 +9,7 @@ require(__DIR__ . "/../../../lib/functions.php");
         $userId= get_user_id();
 
         $boardSolved=$_POST['boardSolved'];
-        $points=$_POST['points'];
+        $thePoints=$_POST['points'];
         if($boardSolved=="true" || $boardSolved=="false"){//is boardSolved is null, we dont want to update it
             $boardSolved=$boardSolved==="false"?0:1;
             if($boardSolved===1){
@@ -32,8 +32,11 @@ require(__DIR__ . "/../../../lib/functions.php");
             $addAttempt->execute([":userId" => $userId,":correctBrd" => $boardSolved]);
             echo "Databases Updated!!\n";
         }
-        elseif ($points!="0"){
-            echo "Points Updated";
+
+        if ($thePoints!="0"){
+            $getScore = $db->prepare("UPDATE Users SET points=points+ :thePoints WHERE id= :userId;");
+            $getScore->execute([":thePoints" => $thePoints,":userId" => $userId]);
+            echo "Points Updated!!";
         }
     } catch (Exception $e) {
          echo var_export($e, true);

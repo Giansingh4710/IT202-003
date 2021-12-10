@@ -46,6 +46,11 @@ require(__DIR__ . "/../../partials/nav.php");
         /* background-color:bisque; */
         flex: 5;
       }
+      #buttonMsg{
+        padding: 25px;
+        height: 10%;
+        background-color:aqua
+      }
     </style>
   </head>
   <body>
@@ -251,9 +256,10 @@ require(__DIR__ . "/../../partials/nav.php");
         <tr class="horizontalSpace"></tr>
       </div>
     </table>
-    <button onclick="solveAndShowBoard()">Show solved board</button>
-    <button onclick="generateRandomBoard()">New game</button>
-    <button onclick="checkIfCorrect()" id="isCorrect">See if Correct</button>
+    <p id="buttonMsg"></p>
+    <button id="showSolvedBoard" onclick="solveAndShowBoard()">Show solved board</button>
+    <button id="newGame" onclick="generateRandomBoard()">New game</button>
+    <button id="seeIfCorrect" onclick="checkIfCorrect()">See if Correct</button>
   </body>
   <script>
     const BOARD = [];
@@ -268,7 +274,7 @@ require(__DIR__ . "/../../partials/nav.php");
           $("#score").load("api/get_score.php");
           $("#points").load("api/get_points.php");
           <?php else: ?>
-            $("#score").text("Please Log in to Get or Save Score")
+            $("#score").text("Not Logged In")
         <?php endif; ?>
       });
     }
@@ -317,7 +323,7 @@ require(__DIR__ . "/../../partials/nav.php");
           showUserBoard(BOARD);
           theGameGrid.style.display = "block";
           loading.style.display = "none";
-          $("#isCorrect").show()
+          $("#seeIfCorrect").show()
           return;
         }
       }
@@ -427,7 +433,8 @@ require(__DIR__ . "/../../partials/nav.php");
 
     function solveAndShowBoard() {
       solveBoard(BOARD);
-      showUserBoard(BOARD);
+      showUserBoard2(BOARD);
+      sendDataToServer(null,-2);
     }
 
     function checkIfCorrect() {
@@ -447,9 +454,9 @@ require(__DIR__ . "/../../partials/nav.php");
           }
         }
       }
-      sendDataToServer(true,0)
+      sendDataToServer(true,1)
       flash("GOOD JOB. IT'S a VALID BOARD", "success");
-      $("#isCorrect").hide()
+      // $("#seeIfCorrect").hide()
 
     }
     
@@ -469,14 +476,14 @@ require(__DIR__ . "/../../partials/nav.php");
             "points":pointsUpdate
           },
           success: (resp, status, xhr) => {
-            console.log(resp)
+            console.log("resp",resp)
+            getScore();
           },
           error: (xhr, status, error) => {
             console.log(xhr, status, error);
           }
         }
-        );
-        getScore();
+      );
     }
 
     function fillBoard(corr) {
@@ -496,6 +503,35 @@ require(__DIR__ . "/../../partials/nav.php");
       showUserBoard2(BOARD);
     }
 
+    function otherStuff(){
+      const showSolvedBoard = document.getElementById('showSolvedBoard');
+      const newGame = document.getElementById('newGame');
+      const seeIfCorrect = document.getElementById('seeIfCorrect');
+      
+      showSolvedBoard.onmouseover = function() {
+        $("#buttonMsg").text("This button will solve the board for you but you will lose 2 points")
+      }
+      showSolvedBoard.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+
+      newGame.onmouseover = function() {
+        $("#buttonMsg").text("This button will Generate a new board for you!")
+      }
+      newGame.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+
+      seeIfCorrect.onmouseover = function() {
+        $("#buttonMsg").text("This button will see If the Board is solved correctly and will send data to database")
+      }
+      seeIfCorrect.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+      
+    }
+
+    otherStuff()
     getScore();
     generateRandomBoard();
   </script>
