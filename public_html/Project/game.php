@@ -263,7 +263,6 @@ require(__DIR__ . "/../../partials/nav.php");
   </body>
   <script>
     const BOARD = [];
-    
     function sleep(ms) {
       return new Promise((res) => setTimeout(res, ms));
     }
