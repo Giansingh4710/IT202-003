@@ -11,8 +11,8 @@ require(__DIR__ . "/../../../lib/functions.php");
         $getPoints = $db->prepare("SELECT points from Users where id = :userId");
         $getPoints->execute([":userId" => $userId]);
         $theFetch=$getPoints->fetch();
-        $theScore=$theFetch["points"];
-        echo $theScore;
+        $thePoints=$theFetch["points"];
+        echo $thePoints;
     } catch (Exception $e) {
         // flash("<pre>" . var_export($e, true) . "</pre>");
          echo var_export($e, true);
