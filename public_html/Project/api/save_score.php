@@ -34,8 +34,13 @@ require(__DIR__ . "/../../../lib/functions.php");
         }
 
         if ($thePoints!="0"){
-            $getScore = $db->prepare("UPDATE Users SET points=points+ :thePoints WHERE id= :userId;");
-            $getScore->execute([":thePoints" => $thePoints,":userId" => $userId]);
+            $reason=$_POST['reason'];
+            $putPoints = $db->prepare("INSERT INTO PointsHistory (user_id,point_change,reason) VALUES (:userId,:thePoints,:reason)");
+            $putPoints->execute([":userId" => $userId,":thePoints" => $thePoints,":reason"=>$reason]);
+            
+            $updatePoints = $db->prepare("UPDATE Users SET points = (SELECT (ifnull(sum(point_change),0)+10) from PointsHistory where user_id = :userId) where id = :userId");
+            $updatePoints->execute([":userId" => $userId]);
+            //Update Users set points = (select ifnull(sum(change),0) from PointsHistory where user_id = :uid) where id= :uid
             echo "Points Updated!!";
         }
     } catch (Exception $e) {
