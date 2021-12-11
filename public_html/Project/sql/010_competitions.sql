@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS Competitions(
     min_participants int DEFAULT 3,
     paid_out tinyint(1) DEFAULT 0,
     min_score int DEFAULT 1,
-    first_place int default 70,
-    second_place int default 20,
-    third_place int default 10,
+    first_place int default 70, --reward
+    second_place int default 20, --reward
+    third_place int default 10, --reward
     
     cost_to_create int default (starting_reward+1),
 
