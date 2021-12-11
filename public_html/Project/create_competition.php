@@ -41,6 +41,12 @@ function putPayoutOptionInVars($opt,$opts){
     return array($p1,$p2,$p3);
 }
 
+$creator_id = get_user_id();
+$db=getDB();
+$stmt = $db->prepare("SELECT points from Users WHERE id=:uid");
+$stmt->execute([":uid"=>$creator_id]);
+$avaliablePoints=$stmt->fetch()["points"];
+
 if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
     $comp_name=$_POST['comp_name'];
     $starting_reward=$_POST['starting_reward'];
@@ -48,13 +54,11 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
     $min_participants=$_POST['min_participants'];
     $join_fee=$_POST['join_fee'];
     $duration=$_POST['duration'];
-    $creator_id = get_user_id();
+    $costToMakeComp=$join_fee+$starting_reward+1;
 
     
-
     $payout_option=$_POST['payout_option'];
     $places=putPayoutOptionInVars($payout_option,$payout_options);
-
     $newArr=array ( 
         'comp_name' =>$_POST['comp_name'],
         'starting_reward' =>$_POST['starting_reward'],
@@ -67,10 +71,24 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
         'third_place'=>$places[2],
         'creator_id'=>$creator_id
     );    
-    $comp_id = save_data("Competitions", $newArr);
-    if ($comp_id > 0) {
-        if (add_to_competition($comp_id, get_user_id())) {
-            flash("Successfully created competition", "success");
+    
+    if($avaliablePoints<$costToMakeComp){
+        flash("Not enough points to make the Competition","warning");
+    }
+    else{
+        $comp_id = save_data("Competitions", $newArr);
+        if ($comp_id > 0) {
+            if (add_to_competition($comp_id, get_user_id())) {
+                flash("Successfully created competition", "success");
+                $stmt = $db->prepare("UPDATE Users SET points=:newPoints WHERE id=:uid");
+                $stmt->execute([":newPoints"=>$avaliablePoints-$costToMakeComp,":uid"=>$creator_id]);
+            }
+            else{
+                flash("Error in creating the Competition", "warning");
+            }
+        }
+        else{   
+            flash("Error in creating the Competition", "warning");
         }
     }
 }
@@ -124,6 +142,7 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
             }
             let cost = starting + join;
             document.querySelector("[type=submit]").value = `Create Competition (Cost: ${cost})`;
+            return cost;
         }
     </script>
 </div>
