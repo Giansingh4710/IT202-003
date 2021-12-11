@@ -6,9 +6,9 @@ $db = getDB();
 if (isset($_POST["join"])) {
     $user_id = get_user_id();
     $comp_id = se($_POST, "comp_id", 0, false);
-    $cost = se($_POST, "join_cost", 0, false);
-    echo var_export($cost);
-    // add_to_competition($comp_id, $user_id);
+    $cost = se($_POST, "join_fee", 0, false);
+    updatePoints($cost*-1,"Joined Competition");
+    add_to_competition($comp_id);
 }
 $per_page = 5;
 
@@ -34,7 +34,7 @@ try {
             <th>Reward</th>
             <th>Min Score</th>
             <th>Expires</th>
-            <th>Actions</th>
+            <thead>Actions</th>
         </thead>
         <tbody>
             <?php if (count($results) > 0) : ?>
@@ -46,16 +46,19 @@ try {
                         <td><?php se($row, "min_score"); ?></td>
                         <td><?php se($row, "expires", "-"); ?></td>
                         <td>
-                            <?php if (se($row, "joined", 0, false)) : ?>
+                            <!-- <?php //if (se($row, "joined", 0, false)) : ?> -->
+                            <?php if (inComp($row)) : ?>
                                 <button class="btn btn-primary disabled" onclick="event.preventDefault()" disabled>Already Joined</button>
+                            <?php elseif (se($row, "min_score",0,false)>getUserScore()) : ?>
+                                <button class="btn btn-primary disabled" onclick="event.preventDefault()" disabled>Score too low to Join</button>
                             <?php else : ?>
                                 <form method="POST">
                                     <input type="hidden" name="comp_id" value="<?php se($row, 'id'); ?>" />
-                                    <input type="hidden" name="cost" value="<?php se($row, 'join_cost', 0); ?>" />
-                                    <input type="submit" name="join" class="btn btn-primary" value="Join (Cost: <?php se($row, "join_cost", 0) ?>)" />
+                                    <input type="hidden" name="cost" value="<?php se($row, 'join_fee', 0); ?>" />
+                                    <input type="submit" name="join" class="btn btn-primary" value="Join (Cost: <?php se($row, "join_fee", 0) ?>)" />
                                 </form>
                             <?php endif; ?>
-                            <a class="btn btn-secondary" href="view_competition.php?id=<?php se($row, 'id'); ?>">View</a>
+                            <!-- <a class="btn btn-secondary" href="view_competition.php?id=<?php //se($row, 'id'); ?>">View</a> -->
                         </td>
                     </tr>
                 <?php endforeach; ?>
