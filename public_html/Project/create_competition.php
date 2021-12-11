@@ -78,10 +78,9 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
     else{
         $comp_id = save_data("Competitions", $newArr);
         if ($comp_id > 0) {
-            if (add_to_competition($comp_id, get_user_id())) {
+            if (add_to_competition($comp_id)) {
+                updatePoints($costToMakeComp*-1,"Made Competition");
                 flash("Successfully created competition", "success");
-                $stmt = $db->prepare("UPDATE Users SET points=:newPoints WHERE id=:uid");
-                $stmt->execute([":newPoints"=>$avaliablePoints-$costToMakeComp,":uid"=>$creator_id]);
             }
             else{
                 flash("Error in creating the Competition", "warning");

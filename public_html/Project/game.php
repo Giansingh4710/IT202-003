@@ -461,7 +461,6 @@ require(__DIR__ . "/../../partials/nav.php");
     }
     
     function sendDataToServer(boardIsSolved,pointsUpdate,reason){
-      console.log(boardIsSolved,pointsUpdate)
       <?php if(!is_logged_in()):?>
         console.log("Not logged in!. from sendData Func");
         flash("Log in to Save Score.","warning")
