@@ -52,30 +52,7 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
 
     $payout_option=$_POST['payout_option'];
     $places=putPayoutOptionInVars($payout_option,$payout_options);
-    
-    
-    // $db = getDB();
-    // $stmt = $db->prepare("INSERT INTO Competitions (comp_name,duration,starting_reward,join_fee,min_participants,min_score,first_place,second_place,third_place,creator_id) VALUES 
-    //     (:comp_name, :duration,:starting_reward,:join_fee,:min_participants,:min_score,:p1,:p2,:p3,:creator_id )");
-    // try {
-    //     $stmt->execute([
-    //         ":comp_name"=>$comp_name, 
-    //         ":duration"=>$duration,
-    //         ":starting_reward"=>$starting_reward,
-    //         ":join_fee"=>$join_fee,
-    //         ":min_participants"=>$min_participants,
-    //         ":min_score"=>$min_score,
-    //         ":p1"=>$places[0],
-    //         ":p2"=>$places[1],
-    //         ":p3"=>$places[2],
-    //         ":creator_id"=>$creator_id,
-    //     ]);
-    //     flash("Competition Made!!","success");
-    // } catch (PDOException $e) {
-    //     error_log("Join Competition error: " . var_export($e, true));
-    //     echo var_export($e);
-    // }
-    
+
     $newArr=array ( 
         'comp_name' =>$_POST['comp_name'],
         'starting_reward' =>$_POST['starting_reward'],
@@ -88,11 +65,8 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
         'third_place'=>$places[2],
         'creator_id'=>$creator_id
 
-    );
-    echo var_export($newArr);
-    
+    );    
     $comp_id = save_data("Competitions", $newArr);
-    echo var_export($comp_id);
     if ($comp_id > 0) {
         if (add_to_competition($comp_id, get_user_id())) {
             flash("Successfully created competition", "success");
