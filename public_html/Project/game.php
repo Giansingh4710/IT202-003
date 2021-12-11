@@ -11,29 +11,46 @@ require(__DIR__ . "/../../partials/nav.php");
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <style>
       #theGameGrid {
-        /* border: 3px solid #000000; */
-        /* display: inline; */
+        margin: 5%;
+        /* width: 95%; */
+        height:50%;
+        border: 3px solid green;
+        /* padding: 10px; */
         border-collapse: collapse;
+      }
+      html{
+        padding: 10px;
       }
       .verticalSpace,
       .horizontalSpace {
-        border: 3px solid blue;
+        border: 2px solid blue;
       }
 
       .cell input {
         display: inline-block;
-        width: 40px;
-        height: 40px;
+        width: 100%;
+        height: 100%;
         text-align: center;
         font-size: 30px;
       }
       .displayScore{
         display: flex;
         flex-direction: row;
-        width: 50%;
+        /* width: 50%; */
+        font-size: 24px;
       }
-      .solveBoardText{
+      .theScoreOrPointsText{
         flex: 1;
+        /* background-color:aqua */
+      }
+      .theScoreOrPoints{
+        /* background-color:bisque; */
+        flex: 5;
+      }
+      #buttonMsg{
+        padding: 25px;
+        height: 10%;
+        background-color:aqua
       }
     </style>
   </head>
@@ -41,129 +58,79 @@ require(__DIR__ . "/../../partials/nav.php");
     <h1>Play Suduko</h1>
     <h2 id="loading">Loading....</h2>
     <div class="displayScore">
-      <h4 class="solveBoardText">Solved Boards:</h4>
-      <p class="solveBoardText" id="score"></p>
+      <h4 class="theScoreOrPointsText">Solved Boards:</h4>
+      <p class="theScoreOrPoints" id="score"></p>
     </div>
-    <?php if(!is_logged_in()):?>
-      <a href="<?php echo get_url("login.php?redirect=game.php"); ?>">Log In</a>
-      <p>If want to save your solved boards, Log In.</p>
-    <?php endif; ?>
+    <div>
+      <?php if(!is_logged_in()):?>
+        <a href="<?php echo get_url("login.php?redirect=game.php"); ?>">Log In</a>
+        <p>or</p>
+        <a href="<?php echo get_url("register.php?redirect=game.php"); ?>">Register</a>
+        <p>If want to save your solved boards, Log In or Register if you have not Yet.</p>
+        
+        <?php else: ?>
+          <div class="displayScore">
+            <h4 class="theScoreOrPointsText">Points:</h4>
+            <p class="theScoreOrPoints" id="points"></p>
+          </div>
+      <?php endif; ?>
+    </div>
     <table id="theGameGrid">
       <div class="threeRows">
         <tr>
-          <td class="cell" id="cell1"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell2"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell3"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell1"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell2"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell3"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell4"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell5"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell6"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell4"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell5"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell6"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell7"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell8"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell9"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-        </tr>
-        <tr>
-          <td class="cell" id="cell10"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell11"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell12"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell13"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell14"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell15"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell16"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell17"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell18"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell7"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell8"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell9"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
         </tr>
         <tr>
-          <td class="cell" id="cell19"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell20"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell21"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell10"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell11"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell12"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell22"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell23"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell24"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell13"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell14"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell15"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell25"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell26"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell27"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-        </tr>
-        <tr class="horizontalSpace"></tr>
-      </div>
-      <div class="threeRows">
-        <tr>
-          <td class="cell" id="cell28"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell29"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell30"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell31"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell32"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell33"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell34"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell35"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell36"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell16"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell17"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell18"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
         </tr>
         <tr>
-          <td class="cell" id="cell37"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell38"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell39"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell19"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell20"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell21"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell40"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell41"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell42"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell22"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell23"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell24"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell43"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell44"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell45"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-        </tr>
-        <tr>
-          <td class="cell" id="cell46"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell47"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell48"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell49"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell50"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell51"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell52"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell53"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell54"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell25"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell26"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell27"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
         </tr>
@@ -171,73 +138,132 @@ require(__DIR__ . "/../../partials/nav.php");
       </div>
       <div class="threeRows">
         <tr>
-          <td class="cell" id="cell55"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell56"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell57"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell28"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell29"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell30"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell58"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell59"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell60"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell31"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell32"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell33"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell61"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell62"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell63"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-        </tr>
-        <tr>
-          <td class="cell" id="cell64"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell65"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell66"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell67"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell68"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell69"><input type="text" maxlength="1" /></td>
-
-          <td class="verticalSpace"></td>
-
-          <td class="cell" id="cell70"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell71"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell72"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell34"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell35"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell36"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
         </tr>
         <tr>
-          <td class="cell" id="cell73"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell74"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell75"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell37"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell38"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell39"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell76"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell77"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell78"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell40"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell41"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell42"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
 
-          <td class="cell" id="cell79"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell80"><input type="text" maxlength="1" /></td>
-          <td class="cell" id="cell81"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell43"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell44"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell45"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+        </tr>
+        <tr>
+          <td class="cell" maxlenth='1' type="number" id="cell46"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell47"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell48"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell49"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell50"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell51"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell52"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell53"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell54"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+        </tr>
+        <tr class="horizontalSpace"></tr>
+      </div>
+      <div class="threeRows">
+        <tr>
+          <td class="cell" maxlenth='1' type="number" id="cell55"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell56"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell57"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell58"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell59"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell60"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell61"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell62"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell63"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+        </tr>
+        <tr>
+          <td class="cell" maxlenth='1' type="number" id="cell64"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell65"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell66"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell67"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell68"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell69"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell70"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell71"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell72"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+        </tr>
+        <tr>
+          <td class="cell" maxlenth='1' type="number" id="cell73"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell74"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell75"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell76"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell77"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell78"><input type="text" maxlength="1" /></td>
+
+          <td class="verticalSpace"></td>
+
+          <td class="cell" maxlenth='1' type="number" id="cell79"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell80"><input type="text" maxlength="1" /></td>
+          <td class="cell" maxlenth='1' type="number" id="cell81"><input type="text" maxlength="1" /></td>
 
           <td class="verticalSpace"></td>
         </tr>
         <tr class="horizontalSpace"></tr>
       </div>
     </table>
-    <button onclick="solveAndShowBoard()">Show solved board</button>
-    <button onclick="generateRandomBoard()">New game</button>
-    <button onclick="checkIfCorrect()" id="isCorrect">See if Correct</button>
-    <p class="solveBoardText" id="testSaveScore"></p>
+    <p id="buttonMsg"></p>
+    <button id="showSolvedBoard" onclick="solveAndShowBoard()">Show solved board</button>
+    <button id="newGame" onclick="generateRandomBoard()">New game</button>
+    <button id="seeIfCorrect" onclick="checkIfCorrect()">See if Correct</button>
   </body>
   <script>
     const BOARD = [];
-    
     function sleep(ms) {
       return new Promise((res) => setTimeout(res, ms));
     }
@@ -246,8 +272,9 @@ require(__DIR__ . "/../../partials/nav.php");
       $(document).ready(()=>{
         <?php if(is_logged_in()):?>
           $("#score").load("api/get_score.php");
+          $("#points").load("api/get_points.php");
           <?php else: ?>
-            $("#score").text("Please Log in to Get or Save Score")
+            $("#score").text("Not Logged In")
         <?php endif; ?>
       });
     }
@@ -296,7 +323,7 @@ require(__DIR__ . "/../../partials/nav.php");
           showUserBoard(BOARD);
           theGameGrid.style.display = "block";
           loading.style.display = "none";
-          $("#isCorrect").show()
+          $("#seeIfCorrect").show()
           return;
         }
       }
@@ -406,7 +433,8 @@ require(__DIR__ . "/../../partials/nav.php");
 
     function solveAndShowBoard() {
       solveBoard(BOARD);
-      showUserBoard(BOARD);
+      showUserBoard2(BOARD);
+      sendDataToServer(null,-2,"pressed solve board button");
     }
 
     function checkIfCorrect() {
@@ -416,23 +444,23 @@ require(__DIR__ . "/../../partials/nav.php");
           theCell = document.getElementById(cellNum).lastChild;
           let goodNum = validNum(parseInt(theCell.value), i, j, BOARD);
           if (theCell.value === "") {
-            sendDataToServer(false)
+            sendDataToServer(false,0,"")
             flash("BOARD not filled", "danger");
             return;
           } else if (!goodNum) {
-            sendDataToServer(false)
+            sendDataToServer(false,0,"")
             flash("Incorrect Board ", "danger");
             return;
           }
         }
       }
-      sendDataToServer(true)
+      sendDataToServer(true,1,"solved board correctly")
       flash("GOOD JOB. IT'S a VALID BOARD", "success");
-      $("#isCorrect").hide()
+      // $("#seeIfCorrect").hide()
 
     }
     
-    function sendDataToServer(correctBoard){
+    function sendDataToServer(boardIsSolved,pointsUpdate,reason){
       <?php if(!is_logged_in()):?>
         console.log("Not logged in!. from sendData Func");
         flash("Log in to Save Score.","warning")
@@ -442,16 +470,20 @@ require(__DIR__ . "/../../partials/nav.php");
         {
           url: "api/save_score.php",
           type: "post",
-          data:{"boardSolved":correctBoard},
+          data:{
+            "boardSolved":boardIsSolved,
+            "points":pointsUpdate,
+            "reason":reason,
+          },
           success: (resp, status, xhr) => {
-            console.log(resp)
+            console.log("resp",resp)
+            getScore();
           },
           error: (xhr, status, error) => {
             console.log(xhr, status, error);
           }
         }
-        );
-        getScore();
+      );
     }
 
     function fillBoard(corr) {
@@ -471,6 +503,38 @@ require(__DIR__ . "/../../partials/nav.php");
       showUserBoard2(BOARD);
     }
 
+    function otherStuff(){
+      // const cw = $('.cell').width();
+      // $('.cell').css({'height':cw+'px'});
+
+      const showSolvedBoard = document.getElementById('showSolvedBoard');
+      const newGame = document.getElementById('newGame');
+      const seeIfCorrect = document.getElementById('seeIfCorrect');
+      
+      showSolvedBoard.onmouseover = function() {
+        $("#buttonMsg").text("This button will solve the board for you but you will lose 2 points")
+      }
+      showSolvedBoard.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+
+      newGame.onmouseover = function() {
+        $("#buttonMsg").text("This button will Generate a new board for you!")
+      }
+      newGame.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+
+      seeIfCorrect.onmouseover = function() {
+        $("#buttonMsg").text("This button will see If the Board is solved correctly and will send data to database")
+      }
+      seeIfCorrect.onmouseout = function() {
+        $("#buttonMsg").text("")
+      }
+      
+    }
+
+    otherStuff()
     getScore();
     generateRandomBoard();
   </script>
