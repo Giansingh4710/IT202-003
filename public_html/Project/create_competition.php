@@ -50,6 +50,8 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
     $duration=$_POST['duration'];
     $creator_id = get_user_id();
 
+    
+
     $payout_option=$_POST['payout_option'];
     $places=putPayoutOptionInVars($payout_option,$payout_options);
 
@@ -64,7 +66,6 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
         'second_place'=>$places[1],
         'third_place'=>$places[2],
         'creator_id'=>$creator_id
-
     );    
     $comp_id = save_data("Competitions", $newArr);
     if ($comp_id > 0) {
