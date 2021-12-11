@@ -189,6 +189,37 @@ function save_data($table, $data, $ignore = ["submit"])
     }
 }
 
+function updateScore($boardSolved){
+    $db=getDB();
+    $userId=get_user_id();
+    if($boardSolved===1){
+        //+1 to users score
+        $getScore = $db->prepare("SELECT score from Scores where user_id = :userId");
+        $getScore->execute([":userId" => $userId]);
+        $theFetch=$getScore->fetch();
+        
+        if ($theFetch===false){
+            $putScore = $db->prepare("INSERT INTO Scores (score,user_id) VALUES (:newScore,:userId)");
+        }
+        else{
+            $putScore = $db->prepare("UPDATE Scores SET score=:newScore where user_id = :userId");
+        }
+        $theScore=$theFetch===false?"0":$theFetch["score"];
+        $putScore->execute([":newScore"=>$theScore+1,":userId" => $userId]);
+        echo "Correct Board\n";
+    }
+    $addAttempt = $db->prepare("INSERT INTO ScoreHistory (user_id,correct) VALUES (:userId,:correctBrd)");
+    $addAttempt->execute([":userId" => $userId,":correctBrd" => $boardSolved]);
+}
+function updatePoints($thePoints,$reason){
+    $db=getDB();
+    $userId=get_user_id();
+    $putPoints = $db->prepare("INSERT INTO PointsHistory (user_id,point_change,reason) VALUES (:userId,:thePoints,:reason)");
+    $putPoints->execute([":userId" => $userId,":thePoints" => $thePoints,":reason"=>$reason]);
+    
+    $updatePoints = $db->prepare("UPDATE Users SET points = (SELECT (ifnull(sum(point_change),0)+10) from PointsHistory where user_id = :userId) where id = :userId");
+    $updatePoints->execute([":userId" => $userId]);
+}
 
 function get_top10_weekly(){
     $db=getDB();
