@@ -9,7 +9,9 @@ if (isset($_POST["join"])) {
     $cost = se($_POST, "join_fee", 0, false);
     updatePoints($cost*-1,"Joined Competition");
     add_to_competition($comp_id);
+    flash("Successfully added to the Competition!!!","success");
 }
+
 $per_page = 5;
 
 $stmt = $db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires ASC LIMIT 10");
@@ -42,7 +44,7 @@ try {
                     <tr>
                         <td><?php se($row, "comp_name"); ?></td>
                         <td><?php se($row, "current_participants"); ?>/<?php se($row, "min_participants"); ?></td>
-                        <td><?php se($row, "current_reward"); ?><br>Payout: <?php se($row, "place", "-"); ?></td>
+                        <td><?php se($row, "current_reward"); ?><br>Payout: <?php  echo (se($row, "paid_out", "-",false))==="1"?'true':'false'; ?></td>
                         <td><?php se($row, "min_score"); ?></td>
                         <td><?php se($row, "expires", "-"); ?></td>
                         <td>
@@ -70,3 +72,6 @@ try {
         </tbody>
     </table>
 </div>
+<?php
+require(__DIR__ . "/../../partials/flash.php");
+?>
