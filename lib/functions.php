@@ -266,7 +266,7 @@ function getUserScore(){
     return $theScore;
 }
 
-function getCompWinners(){
+function payCompWinners(){
     $db=getDB();
     $getComps=$db->prepare("SELECT * FROM Competitions WHERE paid_out=0 AND expires<CURRENT_TIMESTAMP");
     $getComps->execute();
