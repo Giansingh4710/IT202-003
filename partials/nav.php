@@ -38,8 +38,9 @@ require_once(__DIR__ . "/../lib/functions.php");
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="<?php echo get_url('game.php'); ?>">Play Suduko</a></li>
                 <?php if (is_logged_in()) : ?>
-
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('create_competition.php'); ?>">Make a Competition</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('active_comps.php'); ?>">Join a Competition</a></li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
