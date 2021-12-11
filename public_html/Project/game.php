@@ -12,7 +12,8 @@ require(__DIR__ . "/../../partials/nav.php");
     <style>
       #theGameGrid {
         margin: 5%;
-        width: 95%;
+        /* width: 95%; */
+        height:50%;
         border: 3px solid green;
         /* padding: 10px; */
         border-collapse: collapse;
@@ -504,6 +505,9 @@ require(__DIR__ . "/../../partials/nav.php");
     }
 
     function otherStuff(){
+      // const cw = $('.cell').width();
+      // $('.cell').css({'height':cw+'px'});
+
       const showSolvedBoard = document.getElementById('showSolvedBoard');
       const newGame = document.getElementById('newGame');
       const seeIfCorrect = document.getElementById('seeIfCorrect');

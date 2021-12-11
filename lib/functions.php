@@ -130,49 +130,66 @@ function get_url($dest)
     //handle relative path
     return $BASE_PATH . $dest;
 }
-
-// from summer moduel 10
-function get_account_balance() {
-    if (is_logged_in() && isset($_SESSION["user"]["account"])) {
-        return $_SESSION["user"]["account"];
-        // return (int)se($_SESSION["user"]["account"], "balance", 0, false);
+function update_participants($comp_id)
+{
+    $db = getDB();
+    $stmt = $db->prepare("UPDATE Competitions set current_participants = (SELECT IFNULL(COUNT(1),0) FROM CompetitionParticipants WHERE competition_id = :cid), 
+    current_reward = IFNULL(current_reward,0)+1 WHERE id = :cid");
+    try {
+        $stmt->execute([":cid" => $comp_id]);
+        return true;
+    } catch (PDOException $e) {
+        error_log("Update competition participant error: " . var_export($e, true));
     }
-    return 0;
+    return false;
 }
-/*
-function change_points($points, $reason, $src = -1, $dest = -1, $memo = "", $forceAllowZero = false) {
-    //I'm choosing to ignore the record of 0 point transactions
 
-    if ($points > 0 || $forceAllowZero) {
-        $query = "INSERT INTO Points_History (account_src, account_dest, point_change, reason, memo) 
-            VALUES (:acs, :acd, :pc, :r,:m), 
-            (:acs2, :acd2, :pc2, :r, :m)";
-        //I'll insert both records at once, note the placeholders kept the same and the ones changed.
-        $params[":acs"] = $src;
-        $params[":acd"] = $dest;
-        $params[":r"] = $reason;
-        $params[":m"] = $memo;
-        $params[":pc"] = ($points * -1);
+function add_to_competition($comp_id, $user_id)
+{
+    $db = getDB();
+    $stmt = $db->prepare("INSERT INTO CompetitionParticipants (user_id, comp_id) VALUES (:uid, :cid)");
+    try {
+        $stmt->execute([":uid" => $user_id, ":cid" => $comp_id]);
+        update_participants($comp_id);
+        return true;
+    } catch (PDOException $e) {
+        error_log("Join Competition error: " . var_export($e, true));
+    }
+    return false;
+}
 
-        $params[":acs2"] = $dest;
-        $params[":acd2"] = $src;
-        $params[":pc2"] = $points;
-        $db = getDB();
-        $stmt = $db->prepare($query);
-        try {
-            $stmt->execute($params);
-            //added for module 10 to only refresh the logged in user's account
-            //if it's part of src or dest since this is called during competition winner payout
-            //which may not be the logged in user
-            if ($src === get_user_id() || $dest === get_user_account_id()) {
-                refresh_account_balance();
-            }
-        } catch (PDOException $e) {
-            flash("Transfer error occurred: " . var_export($e->errorInfo, true), "danger");
-        }
+function save_data($table, $data, $ignore = ["submit"])
+{
+    $table = se($table, null, null, false);
+    $db = getDB();
+    $query = "INSERT INTO $table "; //be sure you trust $table
+    //https://www.php.net/manual/en/functions.anonymous.php Example#3
+    $columns = array_filter(array_keys($data), function ($x) use ($ignore) {
+        return !in_array($x, $ignore); // $x !== "submit";
+    });
+    //arrow function uses fn and doesn't have return or { }
+    //https://www.php.net/manual/en/functions.arrow.php
+    $placeholders = array_map(fn ($x) => ":$x", $columns);
+    $query .= "(" . join(",", $columns) . ") VALUES (" . join(",", $placeholders) . ")";
+    
+    $params = [];
+    foreach ($columns as $col) {
+        $params[":$col"] = $data[$col];
+    }
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute($params);
+        //https://www.php.net/manual/en/pdo.lastinsertid.php
+        //echo "Successfully added new record with id " . $db->lastInsertId();
+        return $db->lastInsertId();
+    } catch (PDOException $e) {
+        //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        flash("<pre>" . var_export($e->errorInfo, true) . "</pre>");
+        return -1;
     }
 }
-*/
+
+
 function get_top10_weekly(){
     $db=getDB();
     $timestamp = date('Y-m-d H:i:s',time()-(7*86400));
