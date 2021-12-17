@@ -86,86 +86,121 @@ $email = get_user_email();
 $username = get_username();
 ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<div class="container-fluid">
-    <h1>Profile</h1>
-    <form method="POST" onsubmit="return validate(this);">
-        <div class="mb-3">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-control" type="email" name="email" id="email" value="<?php se($email); ?>" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
-        </div>
-        <!-- DO NOT PRELOAD PASSWORD -->
-        <div class="mb-3">Password Reset</div>
-        <div class="mb-3">
-            <label class="form-label" for="cp">Current Password</label>
-            <input class="form-control" type="password" name="currentPassword" id="cp" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="np">New Password</label>
-            <input class="form-control" type="password" name="newPassword" id="np" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="conp">Confirm Password</label>
-            <input class="form-control" type="password" name="confirmPassword" id="conp" />
-        </div>
-        <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
-    </form>
-</div>
-<div class="container-fluid">
-    <button id="showScoresBtn" onclick="getScores()" class="mt-3 btn btn-primary">Show last 10 Scores</button>
-    <ol id="last10Scores">
-    </ol>
-</div>
-<script>
-    function validate(form) {
-        let pw = form.newPassword.value;
-        let con = form.confirmPassword.value;
-        let isValid = true;
-        if (pw !== con) {
-            flash("Password and Confirm password must match", "warning");
-            isValid = false;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <style>
+        .displayScore{
+        display: flex;
+        flex-direction: row;
+        /* width: 50%; */
+        font-size: 24px;
         }
-        return isValid;
-    }
+        .theScoreOrPointsText{
+        flex: 1;
+        /* background-color:aqua */
+        }
+        .theScoreOrPoints{
+        /* background-color:bisque; */
+        flex: 5;
+      }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>Profile</h1>
+        <form method="POST" onsubmit="return validate(this);">
+            <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" name="email" id="email" value="<?php se($email); ?>" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="username">Username</label>
+                <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
+            </div>
+            <!-- DO NOT PRELOAD PASSWORD -->
+            <div class="mb-3">Password Reset</div>
+            <div class="mb-3">
+                <label class="form-label" for="cp">Current Password</label>
+                <input class="form-control" type="password" name="currentPassword" id="cp" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="np">New Password</label>
+                <input class="form-control" type="password" name="newPassword" id="np" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="conp">Confirm Password</label>
+                <input class="form-control" type="password" name="confirmPassword" id="conp" />
+            </div>
+            <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
+        </form>
+    </div>
 
-    function getScores(){
-        $("#showScoresBtn").hide()
-        $.ajax(
-        {
-          url: "api/get_last10scores.php",
-          success: (resp, status, xhr) => {
-            theScores=JSON.parse(resp);
-            showScores(theScores)
-          },
-          error: (xhr, status, error) => {
-            console.log(xhr, status, error);
-          }
+    <div class="displayScore">
+        <h4 class="theScoreOrPointsText">Points:</h4>
+        <p class="theScoreOrPoints" id="points"></p>
+    </div>
+
+    <div class="container-fluid">
+        <button id="showScoresBtn" onclick="getScores()" class="mt-3 btn btn-primary">Show last 10 Scores</button>
+        <ol id="last10Scores">
+        </ol>
+    </div>
+    <script>
+        function validate(form) {
+            let pw = form.newPassword.value;
+            let con = form.confirmPassword.value;
+            let isValid = true;
+            if (pw !== con) {
+                flash("Password and Confirm password must match", "warning");
+                isValid = false;
+            }
+            return isValid;
         }
-        );
-    }
-    function showScores(scrs){
-        const theUl=document.getElementById("last10Scores")
-        theUl.innerHTML=""
-        if(scrs.length===0){
-            theUl.innerHTML="<div>No recorded attempts.</div>"
+    
+        function getScores(){
+            $("#showScoresBtn").hide()
+            $.ajax(
+            {
+              url: "api/get_last10scores.php",
+              success: (resp, status, xhr) => {
+                theScores=JSON.parse(resp);
+                showScores(theScores)
+              },
+              error: (xhr, status, error) => {
+                console.log(xhr, status, error);
+              }
+            }
+            );
         }
-        scrs.forEach(score=>{
-            const li=document.createElement("li")
-            const div=document.createElement("div")
-            
-            msg=score.correct==="0"?"Board not Solved":"Board Solved Correctly!!!"
-            const date=new Date(score.created)
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',time:'numeric' };
-            div.innerHTML=`<h5>${msg}</h5><p>Attempted - ${date.toLocaleDateString("en-US",options)} at ${date.toLocaleTimeString('en-US')}</p>`
-            li.appendChild(div);
-            theUl.appendChild(li);
-        })
-    }
-</script>
+        function showScores(scrs){
+            const theUl=document.getElementById("last10Scores")
+            theUl.innerHTML=""
+            if(scrs.length===0){
+                theUl.innerHTML="<div>No recorded attempts.</div>"
+            }
+            scrs.forEach(score=>{
+                const li=document.createElement("li")
+                const div=document.createElement("div")
+                
+                msg=score.correct==="0"?"Board not Solved":"Board Solved Correctly!!!"
+                const date=new Date(score.created)
+                const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',time:'numeric' };
+                div.innerHTML=`<h5>${msg}</h5><p>Attempted - ${date.toLocaleDateString("en-US",options)} at ${date.toLocaleTimeString('en-US')}</p>`
+                li.appendChild(div);
+                theUl.appendChild(li);
+            })
+        }
+          
+        $("#points").load("api/get_points.php");
+    </script>
+</body>
+</html>
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
