@@ -6,6 +6,7 @@ is_logged_in(true);
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
+    $visibility =se($_POST, "visibility", null, false)==""?"public":"private";
     $hasError = false;
     //sanitize
     $email = sanitize_email($email);
@@ -19,11 +20,14 @@ if (isset($_POST["save"])) {
         $hasError = true;
     }
     if (!$hasError) {
-        $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
+        $params = [":email" => $email, ":username" => $username,":visibility"=>$visibility, ":id" => get_user_id()];
         $db = getDB();
-        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, visibility = :visibility where id = :id");
         try {
             $stmt->execute($params);
+            $_SESSION["user"]["visibility"]=$visibility;
+            flash("User Details Updated!!","success");
+
         } catch (Exception $e) {
             users_check_duplicate($e->errorInfo);
         }
@@ -84,6 +88,7 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+$visibility = get_visibility();
 ?>
 
 <!DOCTYPE html>
@@ -109,6 +114,66 @@ $username = get_username();
         /* background-color:bisque; */
         flex: 5;
       }
+      
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+       }
+
+        .switch input { 
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+        input:checked + .slider {
+          background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+
+        input:focus + .slider {
+          box-shadow: 0 0 1px #2196F3;
+        }
+
+
+        /* Rounded sliders */
+        .slider.round {
+          border-radius: 34px;
+        }
+
+        .slider.round:before {
+          border-radius: 50%;
+        }
+
     </style>
 </head>
 <body>
@@ -137,8 +202,19 @@ $username = get_username();
                 <label class="form-label" for="conp">Confirm Password</label>
                 <input class="form-control" type="password" name="confirmPassword" id="conp" />
             </div>
+            <!-- DO NOT PRELOAD PASSWORD -->
+
+            <div class="mb-3" style="flex-direction: column;">
+                <label style="flex:1" class="form-label" id="switchLabel" for="switchVisibility">Profile Visibility : Private</label>
+                <label style="flex:1" class="switch">
+                    <input type="checkbox" onclick="switchBtn()" id="switchVisibility" name="visibility">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
             <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
         </form>
+
     </div>
 
     <div class="displayScore">
@@ -196,7 +272,29 @@ $username = get_username();
                 theUl.appendChild(li);
             })
         }
-          
+
+        function switchBtn(){
+            const theSwitch = document.getElementById("switchVisibility")            
+            const label = document.getElementById("switchLabel")
+           if (theSwitch.checked){
+               label.innerText="Profile Visibility : Private"
+               theSwitch.value="private";
+            }
+            else{
+                label.innerText="Profile Visibility : Public"
+                theSwitch.value="public";
+            }
+            console.log("Public Profile: "+ !theSwitch.checked)
+        }
+
+        function firstSwitchVal(){
+            const theSwitch = document.getElementById("switchVisibility")
+            checkVal="<?php echo se($visibility,null,"",false)=="public"?"false":"true";?>"=="false"?false:true
+            theSwitch.checked=checkVal
+            switchBtn()
+        }
+
+        firstSwitchVal()          
         $("#points").load("api/get_points.php");
     </script>
 </body>
