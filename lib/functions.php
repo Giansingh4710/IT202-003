@@ -194,6 +194,18 @@ function save_data($table, $data, $ignore = ["submit"])
     }
 }
 
+
+//function made by daas
+
+function get_visibility()
+{
+    if (is_logged_in()) { //we need to check for login first because "user" key may not exist
+        return se($_SESSION["user"], "visibility", "", false);
+    }
+    return "";
+}
+
+
 function updateScore($boardSolved){
     $db=getDB();
     $userId=get_user_id();
