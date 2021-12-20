@@ -335,7 +335,7 @@ function payCompWinners(){
     }
 }
 
-function get_user_comp_history($start=0,$end=5){
+function get_user_comp_history($start=0,$resultsNum=5){
     $db=getDB();
     $uid= get_user_id();
     $getHist = $db->prepare("SELECT comp_id FROM CompetitionParticipants  WHERE user_id= :uid");
@@ -348,7 +348,7 @@ function get_user_comp_history($start=0,$end=5){
         $theQuery.=$compId.",";
     }
     $theQuery=substr_replace($theQuery,")",-1);// replace last char in str with ")"    
-    $theQuery.=" LIMIT ".$start.",".$end;
+    $theQuery.=" LIMIT ".$start.",".$resultsNum;
     $getComps=$db->prepare($theQuery);
     try{    
         $getComps->execute();
