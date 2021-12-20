@@ -37,7 +37,11 @@ $lifetime=get_top10_lifetime();
                 <?php if (count($weekly) > 0) : ?>
                     <?php foreach ($weekly as $row) : ?>
                         <tr>
-                            <td><?php se($row, "username"); ?></td>
+                            <td>
+                                <a href="others_profile.php?player=<?php se($row, "username"); ?>">
+                                    <?php se($row, "username"); ?>
+                                </a>
+                            </td>
                             <td><?php se($row, "score"); ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -49,6 +53,7 @@ $lifetime=get_top10_lifetime();
             </tbody>
         </table>
 
+        
         <h3>This Months Top Players</h3>
         <table class="table">
             <thead>
@@ -59,7 +64,11 @@ $lifetime=get_top10_lifetime();
                 <?php if (count($monthly) > 0) : ?>
                     <?php foreach ($monthly as $row) : ?>
                         <tr>
-                            <td><?php se($row, "username"); ?></td>
+                            <td>
+                                <a href="others_profile.php?player=<?php se($row, "username"); ?>">
+                                    <?php se($row, "username"); ?>
+                                </a>
+                            </td>
                             <td><?php se($row, "score"); ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -81,7 +90,11 @@ $lifetime=get_top10_lifetime();
                 <?php if (count($lifetime) > 0) : ?>
                     <?php foreach ($lifetime as $row) : ?>
                         <tr>
-                            <td><?php se($row, "username"); ?></td>
+                            <td>
+                                <a href="others_profile.php?player=<?php se($row, "username"); ?>">
+                                    <?php se($row, "username"); ?>
+                                </a>
+                            </td>
                             <td><?php se($row, "score"); ?></td>
                         </tr>
                     <?php endforeach; ?>
