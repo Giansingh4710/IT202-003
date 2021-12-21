@@ -50,7 +50,7 @@ try {
 
 ?>
 <div class="container-fluid">
-    <h1>List Competitions</h1>
+    <h1>Join a Competitions</h1>
     <table class="table">
         <thead>
             <th>Title</th>
