@@ -38,9 +38,11 @@ require_once(__DIR__ . "/../lib/functions.php");
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="<?php echo get_url('game.php'); ?>">Play Suduko</a></li>
                 <?php if (is_logged_in()) : ?>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('home.php'); ?>">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('create_competition.php'); ?>">Make a Competition</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('active_comps.php'); ?>">Join a Competition</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('my_comp_hist.php'); ?>">My Competition History</a></li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
@@ -55,6 +57,7 @@ require_once(__DIR__ . "/../lib/functions.php");
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_role.php'); ?>">Create</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_roles.php'); ?>">List</a></li>
                             <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign</a></li>
+                            <li><a class="dropdown-item" href="<?php echo get_url('admin/change_comps.php'); ?>">Change Competitions</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
