@@ -310,7 +310,7 @@ $visibility = get_visibility();
                 const li=document.createElement("li")
                 const div=document.createElement("div")
                 
-                msg=score.correct==="0"?"Board not Solved":"Board Solved Correctly!!!"
+                msg=score.correct=="0"?"Board not Solved":"Board Solved Correctly!!!"
                 const date=new Date(score.created)
                 const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',time:'numeric' };
                 div.innerHTML=`<h5>${msg}</h5><p>Attempted - ${date.toLocaleDateString("en-US",options)} at ${date.toLocaleTimeString('en-US')}</p>`
