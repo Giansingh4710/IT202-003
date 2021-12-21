@@ -319,104 +319,106 @@
 
 - Milestone 4
 
-  - [ ] \(mm/dd/yyyy of completion) User can set their profile to be public or private (will need another column in Users table)
+  - [ ] \(12/17/2021 of completion) User can set their profile to be public or private (will need another column in Users table)
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/profile.php?page=1)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/98)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146892712-8742c398-9d24-460c-9b2f-01513d6168be.png))
+        - Showing the Public/Private toggle
 
-  - [ ] \(mm/dd/yyyy of completion) User will be able to see their competition history
+  - [ ] \(12/18/2021 of completion) User will be able to see their competition history
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/my_comp_hist.php?page=1)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/100)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146893077-b86babee-c3c3-4ff5-bf55-8f5fefe3cbd3.png))
+        - Showing the Competition History
 
-  - [ ] \(mm/dd/yyyy of completion) User with the role of “admin” can edit a competition where paid_out = false
+  - [ ] \(12/21/2021 of completion) User with the role of “admin” can edit a competition where paid_out = false
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/admin/change_comps.php)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/109)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146893418-16f9c5a9-1f6c-4ba1-aab5-421311a12b95.png))
+        - Showing that a Competition has been Changed and the success message has appered as a result of the successful query
 
-  - [ ] \(mm/dd/yyyy of completion) Add pagination to the Active Competitions view
+  - [ ] \(12/20/2021 of completion) Add pagination to the Active Competitions view
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/active_comps.php)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/101)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146893884-db04acc4-8dc2-4e1b-8dbb-17dece47a47f.png))
+        - Showing the pagination button. As More entries grow, the pagination will split the entries into different pages
 
-  - [ ] \(mm/dd/yyyy of completion) Anywhere a username is displayed should be a link to that user’s profile
+  - [ ] \(12/20/2021 of completion) Anywhere a username is displayed should be a link to that user’s profile
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/others_profile.php?player=testTest)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/105)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146895519-780f0406-60e7-491f-91bd-3be86d383592.png))
+        - Showing the players' names being displayed with a link on the username
+      - Screenshot #2 (![image](https://user-images.githubusercontent.com/73843250/146896008-ba01057d-9f81-4738-b82f-55c457b528f7.png))
+        - Shows what happens when you press on the link of the player's username
 
-  - [ ] \(mm/dd/yyyy of completion) Viewing an active or expired competition should show the top 10 scoreboard related to that competition
+  - [ ] \(12/20/2021 of completion) Viewing an active or expired competition should show the top 10 scoreboard related to that competition
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/comp_leaderboard.php?comp=First)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/106)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146895519-780f0406-60e7-491f-91bd-3be86d383592.png))
+        - Showing the top 10 players that played in the 'First' Competition. (There are only 5 players because that's all the players that participated in the competition)
 
-  - [ ] \(mm/dd/yyyy of completion) Game should be fully implemented/complete by this point
+  - [ ] \(12/03/2021 of completion) Game should be fully implemented/complete by this point
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/game.php)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/67)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146895043-3ec2ac0d-4e49-4e62-b22f-98f94a1cc0fb.png))
+        - Showing the game screen. The main part of the game was completed a while back. The only things that changed were the looks and other integretions that had to do with the milestones
 
-  - [ ] \(mm/dd/yyyy of completion) User’s score history will include pagination
+  - [ ] \(12/20/2021 of completion) User’s score history will include pagination
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/profile.php?page=1)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/102)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146894679-51695246-be55-410c-bbad-5e5dc1308657.png))
+        - Showing the Profile page that has the user's score with the pagination buttons at the bottom
 
-  - [ ] \(mm/dd/yyyy of completion) Home page will have a weekly, monthly, and lifetime scoreboard
+  - [ ] \(12/20/2021 of completion) Home page will have a weekly, monthly, and lifetime scoreboard
 
     - List of Evidence of Feature Completion
-    - Status: Pending (Completed, Partially working, Incomplete, Pending)
-    - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+    - Status: (Completed)
+    - Direct Link: (https://gs4-prod.herokuapp.com/Project/home.php)
     - Pull Requests
-      - PR link #1 (repeat as necessary)
+      - PR link #1 (https://github.com/Giansingh4710/IT202-003/pull/104)
     - Screenshots
-      - Screenshot #1 (paste the image so it uploads to github) (repeat as necessary)
-        - Screenshot #1 description explaining what you're trying to show
+      - Screenshot #1 (![image](https://user-images.githubusercontent.com/73843250/146894399-ad0583d4-27b6-4583-b6fb-2731ac8a383c.png))
+        - Showing the Home Page
 
 ### Intructions
 
