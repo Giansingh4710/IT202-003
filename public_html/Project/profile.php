@@ -3,9 +3,30 @@ require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
 <?php
+$db = getDB();
+$getScores = $db->prepare("SELECT * FROM ScoreHistory WHERE user_id = :userId");
+$getScores->execute([":userId" => get_user_id()]);
+$totalRows=$getScores->rowCount();
+$resultsPerPage=10;
+$numOfPages=ceil($totalRows/$resultsPerPage);
+
+
+if (!isset($_GET["page"])){
+    die(header("Location: profile.php?page=1"));
+}else if($_GET["page"]<1){
+    die(header("Location: profile.php?page=1"));
+}else if($_GET["page"]>$numOfPages){
+    die(header("Location: profile.php?page=".$numOfPages));
+}
+else{
+    $page=$_GET["page"];
+}
+$row=($page-1)*$resultsPerPage;
+
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
+    $visibility =se($_POST, "visibility", null, false)==""?"public":"private";
     $hasError = false;
     //sanitize
     $email = sanitize_email($email);
@@ -19,11 +40,14 @@ if (isset($_POST["save"])) {
         $hasError = true;
     }
     if (!$hasError) {
-        $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
+        $params = [":email" => $email, ":username" => $username,":visibility"=>$visibility, ":id" => get_user_id()];
         $db = getDB();
-        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, visibility = :visibility where id = :id");
         try {
             $stmt->execute($params);
+            $_SESSION["user"]["visibility"]=$visibility;
+            flash("User Details Updated!!","success");
+
         } catch (Exception $e) {
             users_check_duplicate($e->errorInfo);
         }
@@ -84,6 +108,7 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+$visibility = get_visibility();
 ?>
 
 <!DOCTYPE html>
@@ -109,6 +134,87 @@ $username = get_username();
         /* background-color:bisque; */
         flex: 5;
       }
+      
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+       }
+
+        .switch input { 
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+        input:checked + .slider {
+          background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+
+        input:focus + .slider {
+          box-shadow: 0 0 1px #2196F3;
+        }
+
+
+        /* Rounded sliders */
+        .slider.round {
+          border-radius: 34px;
+        }
+
+        .slider.round:before {
+          border-radius: 50%;
+        }
+        /* for pagination buttons*/
+        .pagination {
+          display: inline-block;
+        }
+
+        .pagination a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+          border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+          background-color: #4CAF50;
+          color: white;
+          border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+
     </style>
 </head>
 <body>
@@ -137,8 +243,19 @@ $username = get_username();
                 <label class="form-label" for="conp">Confirm Password</label>
                 <input class="form-control" type="password" name="confirmPassword" id="conp" />
             </div>
+            <!-- DO NOT PRELOAD PASSWORD -->
+
+            <div class="mb-3" style="flex-direction: column;">
+                <label style="flex:1" class="form-label" id="switchLabel" for="switchVisibility">Profile Visibility : Private</label>
+                <label style="flex:1" class="switch">
+                    <input type="checkbox" onclick="switchBtn()" id="switchVisibility" name="visibility">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
             <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
         </form>
+
     </div>
 
     <div class="displayScore">
@@ -147,7 +264,7 @@ $username = get_username();
     </div>
 
     <div class="container-fluid">
-        <button id="showScoresBtn" onclick="getScores()" class="mt-3 btn btn-primary">Show last 10 Scores</button>
+        <h4>Scores:</h4>
         <ol id="last10Scores">
         </ol>
     </div>
@@ -163,12 +280,17 @@ $username = get_username();
             return isValid;
         }
     
-        function getScores(){
-            $("#showScoresBtn").hide()
+        function getScores(start=0,numOfres=5){
             $.ajax(
             {
               url: "api/get_last10scores.php",
+              type: "post",
+              data:{
+                  "start" : start,
+                  "resultnum" : numOfres,
+              },
               success: (resp, status, xhr) => {
+                  console.log(resp);
                 theScores=JSON.parse(resp);
                 showScores(theScores)
               },
@@ -196,11 +318,41 @@ $username = get_username();
                 theUl.appendChild(li);
             })
         }
-          
+
+        function switchBtn(){
+            const theSwitch = document.getElementById("switchVisibility")            
+            const label = document.getElementById("switchLabel")
+           if (theSwitch.checked){
+               label.innerText="Profile Visibility : Private"
+               theSwitch.value="private";
+            }
+            else{
+                label.innerText="Profile Visibility : Public"
+                theSwitch.value="public";
+            }
+            console.log("Public Profile: "+ !theSwitch.checked)
+        }
+
+        function firstSwitchVal(){
+            const theSwitch = document.getElementById("switchVisibility")
+            checkVal="<?php echo se($visibility,null,"",false)=="public"?"false":"true";?>"=="false"?false:true
+            theSwitch.checked=checkVal
+            switchBtn()
+        }
+
+        getScores(<?php echo $row ?>,<?php echo $resultsPerPage ?>)
+        firstSwitchVal()          
         $("#points").load("api/get_points.php");
     </script>
 </body>
 </html>
 <?php
+if ($page-1==0) $page=2;
+if ($page+1==$numOfPages+1) $page=$numOfPages-1;
+$j='<div class="pagination">
+        <a href="profile.php?page='.($page-1).'">❮</a>
+        <a href="profile.php?page='.($page+1).'">❯</a>
+    </div>';
+echo $j;
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>

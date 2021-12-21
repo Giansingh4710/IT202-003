@@ -1,6 +1,12 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
+if (!isset($_GET["page"])){
+    $page=1;
+}else{
+    $page=$_GET["page"];
+}
+
 $db = getDB();
 //handle join
 if (isset($_POST["join"])) {
@@ -12,9 +18,11 @@ if (isset($_POST["join"])) {
     flash("Successfully added to the Competition!!!","success");
 }
 
-$per_page = 5;
 
-$stmt = $db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires ASC LIMIT 10");
+$per_page = 10;
+$startRow=($page-1)*$per_page;
+
+$stmt = $db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires ASC LIMIT ".$startRow.",".$per_page);
 $results = [];
 try {
     $stmt->execute();
@@ -26,6 +34,14 @@ try {
     flash("There was a problem fetching competitions, please try again later", "danger");
     error_log("List competitions error: " . var_export($e, true));
 }
+
+$numOfRows=$db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires");
+$numOfRows->execute();
+$numOfRows=$numOfRows->rowCount();
+
+$numOfPages=ceil($numOfRows/$per_page); 
+
+
 ?>
 <div class="container-fluid">
     <h1>List Competitions</h1>
@@ -42,7 +58,11 @@ try {
             <?php if (count($results) > 0) : ?>
                 <?php foreach ($results as $row) : ?>
                     <tr>
-                        <td><?php se($row, "comp_name"); ?></td>
+                        <td>
+                            <a href="comp_leaderboard.php?comp=<?php se($row, "comp_name"); ?>">
+                                <?php se($row, "comp_name"); ?>
+                            </a>
+                        </td>
                         <td><?php se($row, "current_participants"); ?>/<?php se($row, "min_participants"); ?></td>
                         <td><?php se($row, "current_reward"); ?><br>Payout: <?php  echo (se($row, "paid_out", "-",false))==="1"?'true':'false'; ?></td>
                         <td><?php se($row, "min_score"); ?></td>
@@ -73,5 +93,9 @@ try {
     </table>
 </div>
 <?php
+for($i=1;$i<=$numOfPages;$i++){
+    $j="<a type='button' class='btn btn-primary' href='active_comps.php?page=".$i."'>Page ". $i. "</a> ";
+    echo $j;
+}
 require(__DIR__ . "/../../partials/flash.php");
 ?>
