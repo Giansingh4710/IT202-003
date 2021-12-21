@@ -24,7 +24,7 @@ if (isset($_POST["comp_name"]) && !empty($_POST["comp_name"])) {
     $check=$db->prepare("SELECT comp_name FROM Competitions WHERE comp_name=:cnm");
     $check->execute([":cnm"=>$comp_name]);
     $check=$check->rowCount();
-    if ($check>1){
+    if ($check>0 && $comp_name!=$data['comp_name']){
         flash("Already have a competition with name: ".$comp_name,"warning");
     }
     else{
