@@ -1,9 +1,11 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
+
 if (!isset($_GET["page"])){
     $page=1;
-}else{
+}
+else{
     $page=$_GET["page"];
 }
 
@@ -18,8 +20,17 @@ if (isset($_POST["join"])) {
     flash("Successfully added to the Competition!!!","success");
 }
 
+$numOfRows=$db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires");
+$numOfRows->execute();
+$numOfRows=$numOfRows->rowCount();
 
 $per_page = 10;
+$numOfPages=ceil($numOfRows/$per_page);
+if ($page<1 || $page>$numOfPages) {
+    flash("Not a right Page Number","warning");
+    $page=1;
+}
+
 $startRow=($page-1)*$per_page;
 
 $stmt = $db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires ASC LIMIT ".$startRow.",".$per_page);
@@ -32,19 +43,14 @@ try {
     }
 } catch (PDOException $e) {
     flash("There was a problem fetching competitions, please try again later", "danger");
+    echo "<pre>".var_export($e,true)."</pre>";
     error_log("List competitions error: " . var_export($e, true));
 }
-
-$numOfRows=$db->prepare("SELECT * FROM Competitions WHERE expires>CURRENT_TIMESTAMP ORDER BY expires");
-$numOfRows->execute();
-$numOfRows=$numOfRows->rowCount();
-
-$numOfPages=ceil($numOfRows/$per_page); 
 
 
 ?>
 <div class="container-fluid">
-    <h1>List Competitions</h1>
+    <h1>Join a Competition</h1>
     <table class="table">
         <thead>
             <th>Title</th>

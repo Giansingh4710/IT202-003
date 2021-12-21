@@ -1,5 +1,6 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+payCompWinners();//pays winners of competitions if needed when anyone goes to play game
 ?>
 <!DOCTYPE html>
 <html lang="en">
