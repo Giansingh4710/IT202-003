@@ -668,7 +668,7 @@ require(__DIR__ . "/../../partials/nav.php");
       }
       sendDataToServer(true,1,"solved board correctly")
       flash("GOOD JOB. IT'S a VALID BOARD", "success");
-      // $("#seeIfCorrect").hide()
+      $("#seeIfCorrect").hide()
 
     }
     

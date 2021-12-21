@@ -2,26 +2,51 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 
+$db = getDB();
+$getScores = $db->prepare("SELECT * FROM CompetitionParticipants INNER JOIN Competitions ON Competitions.id=CompetitionParticipants.comp_id WHERE user_id= :uid");
+$getScores->execute([":uid" => get_user_id()]);
+$totalRows=$getScores->rowCount();
+$resultsPerPage=10;
+$numOfPages=ceil($totalRows/$resultsPerPage);
+
 if (!isset($_GET["page"])){
-    $page=1;
-}else{
+    die(header("Location: my_comp_hist.php?page=1"));
+}else if($_GET["page"]<1){
+    die(header("Location: my_comp_hist.php?page=1"));
+}else if($_GET["page"]>$numOfPages){
+    die(header("Location: my_comp_hist.php?page=".$numOfPages));
+}
+else{
     $page=$_GET["page"];
 }
+$row=($page-1)*$resultsPerPage;
+$userComps=get_user_comp_history($row,$resultsPerPage);
 
-$rowsPerPage=10;
-$row=($page-1)*$rowsPerPage;
-
-$userComps=get_user_comp_history($row,$rowsPerPage);
-$numOfRows=$userComps[0];
-$numOfPages=ceil($numOfRows/$rowsPerPage); //divided by $rowsPerPage becuase $rowsPerPage rows per page
-
-
-$allComps=$userComps[1];
-// echo var_export($numOfRows);
-
-
-$results=$allComps;
+$results=$userComps;
 ?>
+<style>
+        .pagination {
+          display: inline-block;
+        }
+
+        .pagination a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+          border: 1px solid #ddd;
+        }
+
+        .pagination a.active {
+          background-color: #4CAF50;
+          color: white;
+          border: 1px solid #4CAF50;
+        }
+
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+
+</style>
 <div class="container-fluid">
     <h1>My Competitions History</h1>
     <table class="table">
@@ -57,11 +82,12 @@ $results=$allComps;
     </table>
 </div>
 <?php
-
-
-for($i=1;$i<=$numOfPages;$i++){
-    $j="<a type='button' class='btn btn-primary' href='my_comp_hist.php?page=".$i."'>Page ". $i. "</a> ";
-    echo $j;
-}
+if ($page-1==0) $page=2;
+if ($page+1==$numOfPages+1) $page=$numOfPages-1;
+$j='<div class="pagination">
+        <a href="my_comp_hist.php?page='.($page-1).'">❮</a>
+        <a href="my_comp_hist.php?page='.($page+1).'">❯</a>
+    </div>';
+echo $j;
 require(__DIR__ . "/../../partials/flash.php");
 ?>
